@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="complexform2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        input[type="text"],
+        input[type="number"] {
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+
+
+        function sumextended() {
+            var extendedprices = document.getElementsByName('Extendedprice');
+            var sum = 0;
+            for (var i = 0; i < extendedprices.length; i++) {
+                var value = parseFloat(extendedprices[i].value.replace('$', ''));
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            }
+            var subtotal = document.getElementsByName('sumextended');
+            for (var i = 0; i < subtotal.length; i++) {
+                subtotal[i].value = '$' + sum.toFixed(2);
+            }
+        }
+        function avgunit() {
+            var prices = document.getElementsByName('price');
+            var sum = 0;
+
+            for (var i = 0; i < prices.length; i++) {
+                var value = parseFloat(prices[i].value.replace('$', ''));
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            }
+
+            var avg = sum / prices.length;
+            document.getElementById('avgunit').innerText = avg.toFixed(2) + "$";
+        }
+
+        function sumquantity() {
+            var quantities = document.getElementsByName('quantity');
+            var sum = 0;
+
+            for (var i = 0; i < quantities.length; i++) {
+                var value = parseFloat(quantities[i].value);
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            }
+
+            document.getElementById('sumquantity').innerText = sum;
+        }
+
+        function avgdiscount() {
+            var discounts = document.getElementsByName('discount');
+            var sum = 0;
+
+            for (var i = 0; i < discounts.length; i++) {
+                var value = parseFloat(discounts[i].value.replace('%', ''));
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            }
+
+            var avg = sum / discounts.length;
+            document.getElementById('avgdiscount').innerText = avg.toFixed(2) + "%";
+        }
+        function extendedprice() {
+            var prices = document.getElementsByName('price');
+            var discounts = document.getElementsByName('discount');
+            var quantities = document.getElementsByName('quantity');
+
+            for (var i = 0; i < prices.length; i++) {
+                var price = parseFloat(prices[i].value.replace('$', ''));
+                var discount = parseFloat(discounts[i].value.replace('%', ''));
+                var quantity = parseFloat(quantities[i].value);
+
+                if (!isNaN(price) && !isNaN(discount) && !isNaN(quantity)) {
+                    var discountedPrice = price * (1 - discount / 100);
+                    var extendedPrice = discountedPrice * quantity;
+                    document.getElementsByName('Extendedprice')[i].value = "$" + extendedPrice.toFixed(2);
+                } else {
+                    document.getElementsByName('Extendedprice')[i].value = "";
+                }
+            }
+
+            sumextended();
+            gettotal();
+        }
+        function gettotal() {
+            var subtotals = document.getElementById("sumextended").value;
+            var freights = document.getElementById("Freight").value;
+            var subtotal = parseFloat(subtotals.replace('$', ''));
+            var freight = parseFloat(freights.replace('$', ''));
+            var total = subtotal + freight;
+            document.getElementById("total").value = "$" + total;
+
+        }
+
+        window.onload = function () {
+            avgunit();
+            sumquantity();
+            avgdiscount();
+            extendedprice();
+            gettotal();
+        };
+    </script>
+</head>
+
+<body>
+    <form>
+        <div class="container">
+            <div class="div1">
+                <label for="record-input"></label>
+                <input list="Records" id="record-input" name="record-input">
+                <datalist id="Records">
+                    <option value="Record"></option>
+                    <option value="Record1"></option>
+                    <option value="Record2"></option>
+                </datalist>
+            </div>
+            <div class="div2">
+                <label for="View">View:</label>
+                <select name="View" id="View">
+                    <option value="Review Orders">Review Orders</option>
+                </select>
+            </div>
+        </div>
+        <div class="container2" style="border-bottom: 2px solid #cfd8dc ;
+        margin-bottom:10px;">
+            <div class="div3">
+                <i class="fas fa-arrow-up icon"></i>
+                <i class="fas fa-arrow-down icon"></i>
+                <label>*-indicates a required field</label>
+
+            </div>
+            <div class="div4">
+                <button type="submit">Ok</button>
+                <button type="reset"> delete</button>
+                <button type="button">Cancel</button>
+            </div>
+        </div>
+        <div class="container3">
+            <div class="div5">
+                <div class="form-group">
+                    <label for="Customer" class="form1">Customer:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="Customer" name="Customer" required style="color:blue">
+                        <i class="fas fa-pencil-alt icon"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Employee" class="form1">Employee:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="Employee" name="Employee" required style="color:blue">
+                        <i class="fas fa-pencil-alt icon"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="order-date" class="form1">Order Date:</label>
+                    <input type="date" id="order-date" name="order-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="required-date" class="form1">Required Date:</label>
+                    <input type="date" id="required-date" name="required-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="shipped-date" class="form1">Shipped Date:</label>
+                    <input type="date" id="shipped-date" name="shipped-date" required>
+                </div>
+            </div>
+            <div class="div6">
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="region">Region:</label>
+                    <input type="text" id="region" name="region" required>
+                </div>
+                <div class="form-group">
+                    <label for="postal-code">Postal Code:</label>
+                    <input type="number" id="postal-code" name="postal-code" required>
+                </div>
+                <div class="form-group">
+                    <label for="ship-country">Ship Country:</label>
+                    <input type="text" id="ship-country" name="ship-country" required>
+                </div>
+            </div>
+        </div>
+        <div class="container4">
+            <div style="display: flex; background-color: #cfd8dc;;">
+                <div class="circle">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="search-container">
+                    <input type="search" id="search" placeholder="Search...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div>
+                    <label>New Order Details</label>
+                    <label for="action-input"></label>
+                    <input list="Action" id="action-input" name="action-input">
+                    <datalist id="Action">
+                        <option value="Action"></option>
+                        <option value="Action1"></option>
+                        <option value="Action2"></option>
+                    </datalist>
+                </div>
+            </div>
+
+            <div class="container5">
+                <div class="diva">
+                    <label>Product Name</label>
+                    <label style="color:blue">Grandma's Boysenberry Spread</label>
+                    <label style="color:blue">Tofu</label>
+                    <label style="color:blue">Teatime Chocolate Biscuits</label>
+                </div>
+                <div class="diva">
+                    <label>Unit Price</label>
+                    <input type="text" value="$25.00" style="border:none;" name="price"
+                        oninput="avgunit(),extendedprice()">
+                    <input type="text" value="$23.25" style="border:none;" name="price"
+                        oninput="avgunit(),extendedprice()">
+                    <input type="text" value="$9.20" style="border:none;" name="price"
+                        oninput="avgunit(),extendedprice()">
+
+                </div>
+                <div class="diva">
+                    <label>Quantity</label>
+
+                    <input type="number" min="1" value="1" style="border:none;" name="quantity"
+                        oninput="sumquantity(),extendedprice()">
+                    <input type="number" min="1" value="1" style="border:none;" name="quantity"
+                        oninput="sumquantity(),extendedprice()">
+                    <input type="number" min="1" value="1" style="border:none;" name="quantity"
+                        oninput="sumquantity(),extendedprice()">
+                </div>
+                <div class="diva">
+                    <label>Discount</label>
+                    <input type="text" value="0%" style="border:none;" name="discount"
+                        onchange="avgdiscount(),extendedprice()">
+                    <input type="text" value="0%" style="border:none;" name="discount"
+                        onchange="avgdiscount(),extendedprice()">
+                    <input type="text" value="0%" style="border:none;" name="discount"
+                        oninput="avgdiscount(),extendedprice()">
+                </div>
+                <div class="diva">
+                    <label>Product Category Name</label>
+                    <label>Condiments</label>
+                    <label>Produce</label>
+                    <label>Confections</label>
+                </div>
+                <div class="diva">
+                    <label>Product Supplier Company Name</label>
+                    <label>Grandma Kelly's Homestead</label>
+                    <label>Mayumi's</label>
+                    <label>Speciality Biscuits Ltd</label>
+                </div>
+                <div class="diva">
+                    <label>Extended Price</label>
+                    <input type="text" style="border:none;" id="extended1" name="Extendedprice" onchange="sumextended()"
+                        readonly>
+                    <input type="text" style="border:none;" id="extended2" name="Extendedprice" onchange="sumextended()"
+                        readonly>
+                    <input type="text" style="border:none;" id="extended3" name="Extendedprice" onchange="sumextended()"
+                        readonly>
+                </div>
+            </div>
+
+            <div class="container6">
+                <div class="divb">
+                    <label>Avg:<span id="avgunit"></span></label>
+                    <label>Sum Quantity: <span id="sumquantity"></span></label>
+                    <label>Avg Discount: <span id="avgdiscount"></span></label>
+                </div>
+                <div><label>Sum:</label>
+                    <input type="text" name="sumextended" style="border:none;" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="first">
+            <label for="Subtotal">Subtotal:</label>
+
+            <input type="text" name="sumextended" id="sumextended" style="border:none;" readonly>
+        </div>
+        <div class="container7">
+            <div>
+                <label for="Ship_Name">Ship Name:</label>
+                <input type="text" required>
+            </div>
+            <div class="first"> <label for="Freight">Freight</label>
+                <input type="text" value="$38.28" id="Freight" oninput="gettotal()">
+            </div>
+        </div>
+        <div class="container7">
+            <div>
+                <label>Ship Via:</label>
+                <select>
+                    <option>united value</option>
+                </select>
+            </div>
+            <div class="first"> <label>Total</label>
+                <input type="text" id="total" style="border:none;" readonly>
+            </div>
+
+        </div>
+        </div>
+        <div class="container2" style="border-top: 2px solid #cfd8dc; border-bottom:none ;">
+            <div class="div3">
+                <i class="fas fa-arrow-up icon"></i>
+                <i class="fas fa-arrow-down icon"></i>
+                <label>*-indicates a required field</label>
+
+            </div>
+            <div class="div4">
+                <button type="submit">Ok</button>
+                <button type="reset"> delete</button>
+                <button type="button">Cancel</button>
+            </div>
+        </div>
+    </form>
+
+</body>
+
+</html>
